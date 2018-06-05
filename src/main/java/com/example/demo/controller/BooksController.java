@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-//rest controller
+//rest controllers
 @RestController
 public class BooksController {
 
