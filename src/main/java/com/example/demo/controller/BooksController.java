@@ -44,7 +44,7 @@ public class BooksController {
 	// get all books
 	@RequestMapping(value = "/books")
 	public List<Book> getAllBooks() {
-		return service.getList();
+		return service.getBookList();
 	}
 
 	// get book by id
