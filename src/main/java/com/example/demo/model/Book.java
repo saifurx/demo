@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,22 +13,19 @@ import javax.persistence.Id;
 public class Book {
 
 	@Id
+	@Column(name = "BOOK_ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	int id;
+	private int id;
 	@Column
-	String bookName;
-	@Column
-	String author;
+	private String bookName;
 
 	public Book() {
 		super();
 	}
 
-	public Book(int id, String bookName, String author) {
-		super();
-		this.id = id;
+	public Book(int id, String bookName, Author author) {
 		this.bookName = bookName;
-		this.author = author;
+
 	}
 
 	public int getId() {
@@ -46,17 +44,9 @@ public class Book {
 		this.bookName = bookName;
 	}
 
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
 	@Override
 	public String toString() {
-		return "Book [id=" + id + ", bookName=" + bookName + ", author=" + author + "]";
+		return "Book [id=" + id + ", bookName=" + bookName + "]";
 	}
 
 }

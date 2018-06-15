@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Author;
 import com.example.demo.model.Book;
 import com.example.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +53,11 @@ public class BooksController {
 	public Optional<Book> getBookById(@PathVariable Integer id) {
 		return service.getBookById(id);
 	}
-	
-	//update book by id
+
+	// update book by id
 	@PutMapping(value = "/books/{id}")
-	public void updateBooks(@RequestBody Book book ,@PathVariable Integer id)
-	{
-		service.updateBook(book,id);
+	public void updateBooks(@RequestBody Book book, @PathVariable Integer id) {
+		service.updateBook(book, id);
 	}
 
 	// delete book by id
