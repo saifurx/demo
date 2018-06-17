@@ -16,8 +16,6 @@ public class BookService {
 
 	@Autowired
 	private BooksRepository repository;
-	@Autowired
-	private AuthorsRepository repositoryAuthor;
 
 	// save new book
 	public String saveNewBook(Book book) {
@@ -50,17 +48,6 @@ public class BookService {
 		book.setId(id);
 		repository.save(book);
 
-	}
-
-	// save new author
-	public String saveNewAuthor(Author author) {
-
-		return repositoryAuthor.save(author).toString();
-	}
-
-	// get all authors
-	public List<Author> getAuthorList() {
-		return repositoryAuthor.findAll();
 	}
 
 }
