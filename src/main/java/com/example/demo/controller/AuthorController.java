@@ -9,20 +9,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Author;
-import com.example.demo.service.BookService;
+import com.example.demo.service.AuthorService;
 
 @RestController
 public class AuthorController {
 
 	@Autowired
-	private BookService service;
+	private AuthorService authService;
 
 	@PostMapping(value = "/authors")
 	public String saveNewBook(@RequestBody Author author) {
-		return service.saveNewAuthor(author);
+		return authService.saveNewAuthor(author);
 	}
+
 	@GetMapping(value = "/authors")
 	public List<Author> getAllAuthors() {
-		return service.getAuthorList();
+		return authService.getAuthorList();
 	}
 }
