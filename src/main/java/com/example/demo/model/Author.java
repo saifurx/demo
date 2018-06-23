@@ -27,27 +27,15 @@ public class Author {
 	@Column
 	private String noOfBookPublished;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "BOOK_ID")
-	private List<Book> book;
-
 	public Author() {
 
 	}
 
-	public Author(int authorId, String authorName, String noOfBookPublished, List<Book> book) {
-
+	public Author(int authorId, String authorName, String noOfBookPublished) {
+		super();
+		this.authorId = authorId;
 		this.authorName = authorName;
 		this.noOfBookPublished = noOfBookPublished;
-		this.book = book;
-	}
-
-	public List<Book> getBook() {
-		return book;
-	}
-
-	public void setBook(List<Book> book) {
-		this.book = book;
 	}
 
 	public int getAuthorId() {
@@ -77,8 +65,9 @@ public class Author {
 	@Override
 	public String toString() {
 		return "Author [authorId=" + authorId + ", authorName=" + authorName + ", noOfBookPublished="
-				+ noOfBookPublished + ", book=" + book + "]";
+				+ noOfBookPublished + "]";
 	}
-	
 
+	
+	
 }

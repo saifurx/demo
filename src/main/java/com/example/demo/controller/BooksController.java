@@ -1,69 +1,50 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Author;
 import com.example.demo.model.Book;
 import com.example.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.bind.annotation.RestController;
 
 //rest controller
 @RestController
 public class BooksController {
 
 	@Autowired
-	private BookService service;
+	private BookService bookService;
 
-	// home page
-	@GetMapping(value = "/")
-	public String homePage() {
-		return "homepage";
+	// get all book by author id
+	@GetMapping(value = "/authors/{authorId}/books")
+	public Page<Book> getAllBooksByAuthorId(@PathVariable(value = "authorId") Integer authorId, Pageable pageable) {
+		return bookService.getAllBooksByAuthorId(authorId, pageable);
 	}
 
-	// create books using @requestbody
-	@PostMapping(value = "/books")
-	public String saveNewBook(@RequestBody Book book) {
-		return service.saveNewBook(book);
+	// create books using author id
+	@PostMapping(value = "/authors/{authorId}/books")
+	public void createBook(@PathVariable(value = "authorId") Integer authorId, @RequestBody Book book) {
+		bookService.createBook(authorId, book);
+
 	}
 
-	/*
-	 * // get all books
-	 * 
-	 * @GetMapping(value = "/books") public List<Book> getAllBooks() { return
-	 * service.getList(); }
-	 */
-
-	// get all books
-	@RequestMapping(value = "/books")
-	public List<Book> getAllBooks() {
-		return service.getBookList();
+	// Works only if cascading is not all
+	@PutMapping(value = "/authors/{authorId}/books/{bookId}")
+	public void updateBook(@PathVariable(value = "authorId") Integer authorId,
+			@PathVariable(value = "bookId") Integer bookId, @RequestBody Book bookRequest) {
+		bookService.updateBook(authorId, bookId, bookRequest);
 	}
 
-	// get book by id
-	@GetMapping(value = "/books/{id}")
-	public Optional<Book> getBookById(@PathVariable Integer id) {
-		return service.getBookById(id);
-	}
-
-	// update book by id
-	@PutMapping(value = "/books/{id}")
-	public void updateBooks(@RequestBody Book book, @PathVariable Integer id) {
-		service.updateBook(book, id);
-	}
-
-	// delete book by id
-	@DeleteMapping("/books/{id}")
-	public void deleteBookById(@PathVariable Integer id) {
-		service.deleteBookById(id);
+	@DeleteMapping(value = "/authors/{authorId}/books/{bookId}")
+	public void deleteBook(@PathVariable(value = "authorId") Integer authorId,
+			@PathVariable(value = "bookId") Integer bookId) {
+		bookService.deleteBook(authorId, bookId);
 	}
 
 }

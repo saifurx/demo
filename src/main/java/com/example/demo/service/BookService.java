@@ -1,10 +1,14 @@
 package com.example.demo.service;
 
+import com.example.demo.Exception.ResourceNotFoundException;
 import com.example.demo.model.Author;
 import com.example.demo.model.Book;
 import com.example.demo.repository.AuthorsRepository;
 import com.example.demo.repository.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,39 +19,48 @@ import java.util.Optional;
 public class BookService {
 
 	@Autowired
-	private BooksRepository repository;
+	private BooksRepository bookRepository;
 
-	// save new book
-	public String saveNewBook(Book book) {
-		Book save = repository.save(book);
-		return save.toString();
+	@Autowired
+	public AuthorsRepository authorRepository;
+
+	public Page<Book> getAllBooksByAuthorId(Integer authorId, Pageable pageable) {
+
+		if (!authorRepository.existsById(authorId)) {
+			throw new ResourceNotFoundException("AuthorId " + authorId + " not found");
+		}
+		
+		return bookRepository.findByAuthorAuthorId(authorId, pageable);
+	}
+
+	public Book createBook(Integer authorId, Book book) {
+		return authorRepository.findById(authorId).map(author -> {
+			book.setAuthor(author);
+			return bookRepository.save(book);
+		}).orElseThrow(() -> new ResourceNotFoundException("AuthorId " + authorId + " not found"));
+	}
+
+	public Book updateBook(Integer authorId, Integer bookId, Book bookRequest) {
+		if (!bookRepository.existsById(authorId)) {
+			throw new ResourceNotFoundException("AuthorId " + authorId + " not found");
+		}
+		return bookRepository.findById(bookId).map(book -> {
+			book.setBookName(bookRequest.getBookName());
+			return bookRepository.save(book);
+		}).orElseThrow(() -> new ResourceNotFoundException("BookId " + bookId + " not found"));
 
 	}
 
-	// get all books
-	public List<Book> getBookList() {
+	public ResponseEntity<Object> deleteBook(Integer authorId, Integer bookId) {
 
-		return repository.findAll();
-	}
+		if (!authorRepository.existsById(authorId)) {
+			throw new ResourceNotFoundException("AuthorId " + authorId + " not found");
+		}
 
-	// get book by id
-	public Optional<Book> getBookById(Integer id) {
-		Optional<Book> findById = repository.findById(id);
-		if (!findById.isPresent())
-			System.out.println("null--->");
-		return findById;
-	}
-
-	// delete book my id
-	public void deleteBookById(Integer id) {
-		repository.deleteById(id);
-	}
-
-	// update the existing book
-	public void updateBook(Book book, Integer id) {
-		book.setId(id);
-		repository.save(book);
-
+		return bookRepository.findById(bookId).map(book -> {
+			bookRepository.delete(book);
+			return ResponseEntity.ok().build();
+		}).orElseThrow(() -> new ResourceNotFoundException("BookId " + bookId + " not found"));
 	}
 
 }
