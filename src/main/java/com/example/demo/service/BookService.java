@@ -27,7 +27,7 @@ public class BookService {
 	public Page<Book> getAllBooksByAuthorId(Integer authorId, Pageable pageable) {
 
 		if (!authorRepository.existsById(authorId)) {
-			throw new ResourceNotFoundException("AuthorId " + authorId + " not found");
+			throw new ResourceNotFoundException("AuthorId " + authorId + " not found", null, pageable);
 		}
 		
 		return bookRepository.findByAuthorAuthorId(authorId, pageable);
