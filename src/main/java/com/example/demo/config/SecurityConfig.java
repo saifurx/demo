@@ -24,8 +24,15 @@ import com.example.demo.security.JwtAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
+/*
+ *jsr250Enabled - It enables the @RolesAllowed
+ *securedEnabled - It enables the @Secured annotation using which you can protect your controller/service methods
+ * prePostEnabled - It enables more complex expression based access control syntax with @PreAuthorize and @PostAuthorize annotations
+ * 
+ * */
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	//authenticate a User or perform various role-based checks
 	@Autowired
 	CustomUserDetailsService customUserDetailsService;
 

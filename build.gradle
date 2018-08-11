@@ -35,6 +35,12 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-hateoas")
 	compile('org.springframework.boot:spring-boot-starter-security')
 	
+	compile 'io.jsonwebtoken:jjwt-api:0.10.2'
+    runtime 'io.jsonwebtoken:jjwt-impl:0.10.2',
+            // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
+            //'org.bouncycastle:bcprov-jdk15on:1.60',
+            'io.jsonwebtoken:jjwt-jackson:0.10.2'
+	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	runtime('mysql:mysql-connector-java')
 }

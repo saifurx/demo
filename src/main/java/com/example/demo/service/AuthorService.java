@@ -34,7 +34,7 @@ public class AuthorService {
 			author.setAuthorName(authorRequest.getAuthorName());
 			author.setNoOfBookPublished(authorRequest.getNoOfBookPublished());
 			return authorRepository.save(author);
-		}).orElseThrow(() -> new ResourceNotFoundException("Author " + authorId + " not found"));
+		}).orElseThrow(() -> new ResourceNotFoundException("Author " + authorId + " not found", null, authorRequest));
 	}
 
 	public ResponseEntity<Object> deleteAuthor(Integer authorId) {
